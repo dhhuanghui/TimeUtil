@@ -8,8 +8,8 @@ import java.util.Date;
 
 /**
  * Created by dh on 2018/2/8.
+ * 算年柱，月柱以及日柱是以立春作为一年的开始
  */
-
 public class DateUtil {
     //  星期
 //    private static String[] week = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
@@ -26,22 +26,12 @@ public class DateUtil {
     public final static String[] TIAN_GAN = {
             "甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"
     };
-    //    子	西南
-//    丑	西北
-//    寅	四方
-//    卯	南
-//    辰	北
-//    巳	西南
-//    午	北
-//    未	西北
-//    申	东南西
-//    酉	四方
-//    戌	西北
-//    亥	四方
+
     //出行吉利方位 与地支一一对应
     public final static String[] CHUXING = {"西南", "西北", "四方", "南", "北", "西南", "北", "西北", "东南西", "四方", "西北", "四方"};
     //地支
     public static String[] diZhi = {"亥", "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌"};
+
     public static String[] DI_ZHI = {
             "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"
     };
@@ -54,28 +44,6 @@ public class DateUtil {
     public static String[] sheng_xiao = {"猪", "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗"};
     //月支 第一个月也就是正月为寅月
     public static String[] yue_zhi = {"寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥", "子", "丑"};
-    //调节数 用于算日柱
-//    private static int[] tiaoJieShu = {1, 2, 0, 1, 1, 2, 2, 3, 4, 4, 5, 5};
-//    基数
-//    private static int ji_Shu = 1900;
-    /*
-    地支	子	丑	寅	卯	辰	巳	午	未	申	酉	戌	亥
-    阴阳	阳	阴	阳	阴	阳	阴	阳	阴	阳	阴	阳	阴
-    五行	水	土	木	木	土	火	火	土	金	金	土	水
-    方位	北方	中央	东方	东方	中央	南方	南方	中央	西方	西方	中央	北方
-     */
-
-
-    //日柱
-//    private final static String[][] DAY_GAN_ZHI = {
-//            {"癸酉", "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申"},
-//            {"癸未", "甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午"},
-//            {"癸巳", "甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰"},
-//            {"癸卯", "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅"},
-//            {"癸丑", "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子"},
-//            {"癸亥", "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌"},
-//    };
-
 
     /**
      * 获取农历年份
@@ -83,7 +51,7 @@ public class DateUtil {
      * @return
      */
     public static int getLunarYear(int year, int month, int day) {
-        int[] lunarDate = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunarDate = LunarSolarConverter.solarToLunar(year, month, day);
         return lunarDate[0];
     }
 
@@ -96,7 +64,7 @@ public class DateUtil {
      * @return
      */
     public static int[] getLunar(int year, int month, int day) {
-        int[] lunarDate = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunarDate = LunarSolarConverter.solarToLunar(year, month, day);
         return lunarDate;
     }
 
@@ -107,7 +75,7 @@ public class DateUtil {
      * @return
      */
     public static String getLunarMonth(int year, int month, int day) {
-        int[] lunarDate = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunarDate = LunarSolarConverter.solarToLunar(year, month, day);
         return lunarMonth[lunarDate[1] - 1];
     }
 
@@ -120,7 +88,7 @@ public class DateUtil {
      * @return
      */
     public static String[] getLunarMonthDayString(int year, int month, int day) {
-        int[] lunarDate = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunarDate = LunarSolarConverter.solarToLunar(year, month, day);
         String[] strings = new String[2];
         strings[0] = lunarMonth[lunarDate[1] - 1];
         strings[1] = lunarDay[lunarDate[2] - 1];
@@ -136,7 +104,7 @@ public class DateUtil {
      * @return
      */
     public static int[] getLunarMonthDayIndex(int year, int month, int day) {
-        int[] lunarDate = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunarDate = LunarSolarConverter.solarToLunar(year, month, day);
         int[] md = new int[3];
         md[0] = lunarDate[0];
         md[1] = lunarDate[1];
@@ -153,12 +121,12 @@ public class DateUtil {
      * @return
      */
     public static int[] lunarToSolar(int year, int month, int day) {
-        int leapMonth = LunarCalendar.leapMonth(year);
+        int leapMonth = LunarSolarConverter.leapMonth(year);
         boolean isLeapMonth = false;
         if (leapMonth == month) {
             isLeapMonth = true;
         }
-        return LunarCalendar.lunarToSolar(year, month, day, isLeapMonth);
+        return LunarSolarConverter.lunarToSolar(year, month, day, isLeapMonth);
     }
 
     /**
@@ -169,12 +137,12 @@ public class DateUtil {
      * @return
      */
     public static int daysInLunarMonth(int year, int month) {
-        int leapMonth = LunarCalendar.leapMonth(year);
+        int leapMonth = LunarSolarConverter.leapMonth(year);
         boolean isLeapMonth = false;
         if (leapMonth == month) {
             isLeapMonth = true;
         }
-        return LunarCalendar.daysInMonth(year, month, isLeapMonth);
+        return LunarSolarConverter.daysInMonth(year, month, isLeapMonth);
     }
 
     /**
@@ -183,7 +151,7 @@ public class DateUtil {
      * @return
      */
     public static String getLunarDay(int year, int month, int day) {
-        int[] lunarDate = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunarDate = LunarSolarConverter.solarToLunar(year, month, day);
         return lunarDay[lunarDate[2] - 1];
     }
 
@@ -522,7 +490,7 @@ public class DateUtil {
      * @return
      */
     public static int getLunarIndex(int year, int month, int day) {
-        int[] lunarDate = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunarDate = LunarSolarConverter.solarToLunar(year, month, day);
         return lunarDate[1];
     }
 
@@ -592,62 +560,9 @@ public class DateUtil {
         return "";
     }
 
-//    /**
-//     * 通过viewpager的position获取date
-//     *
-//     * @param position
-//     * @return
-//     */
-//    public static Calendar getDateWithPosition(int position) {
-//        long currentTime = position * DateUtil.getOneDay() + DateUtil.getMinDate().getTimeInMillis();
-//        Calendar calendar = Calendar.getInstance();
-//        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-//        int minute = calendar.get(Calendar.MINUTE);
-//        int second = calendar.get(Calendar.SECOND);
-//        calendar.setTimeInMillis(currentTime);
-//        calendar.set(Calendar.HOUR_OF_DAY, hour);
-//        calendar.set(Calendar.MINUTE, minute);
-//        calendar.set(Calendar.SECOND, second);
-//        return calendar;
-//    }
-
-//    /**
-//     * 通过日期转化为viewpager的position
-//     *
-//     * @param calendar
-//     * @return
-//     */
-//    public static int getPositionWithDate(Calendar calendar) {
-//        return (int) ((calendar.getTimeInMillis() - getMinDate().getTimeInMillis()) / getOneDay());
-//    }
-
     public static long getOneDay() {
         return 24 * 60 * 60 * 1000;
     }
-
-//    public static Calendar getMinDate() {
-//        Calendar calendarStart = Calendar.getInstance();
-//        calendarStart.set(Calendar.YEAR, Constants.CALENDAR_MIN_YEAR);
-//        calendarStart.set(Calendar.MONTH, Constants.CALENDAR_MIN_MONTH - 1);
-//        calendarStart.set(Calendar.DAY_OF_MONTH, Constants.CALENDAR_MIN_DAY);
-//        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
-//        calendarStart.set(Calendar.MINUTE, 0);
-//        calendarStart.set(Calendar.SECOND, 0);
-//        calendarStart.set(Calendar.MILLISECOND, 0);
-//        return calendarStart;
-//    }
-//
-//    public static Calendar getMaxDate() {
-//        Calendar calendarEnd = Calendar.getInstance();
-//        calendarEnd.set(Calendar.YEAR, Constants.CALENDAR_MAX_YEAR);
-//        calendarEnd.set(Calendar.MONTH, Constants.CALENDAR_MAX_MONTH - 1);
-//        calendarEnd.set(Calendar.DAY_OF_MONTH, Constants.CALENDAR_MAX_DAY);
-//        calendarEnd.set(Calendar.HOUR_OF_DAY, 0);
-//        calendarEnd.set(Calendar.MINUTE, 0);
-//        calendarEnd.set(Calendar.SECOND, 0);
-//        calendarEnd.set(Calendar.MILLISECOND, 0);
-//        return calendarEnd;
-//    }
 
     public static boolean isToday(Calendar todayCalendar, Calendar otherCalendar) {
         int year = todayCalendar.get(Calendar.YEAR);
@@ -670,7 +585,7 @@ public class DateUtil {
      * @param day
      * @return
      */
-//    public static String getSolarTerm(int year, int month, int day) {
-//        return com.haibin.calendarview.LunarCalendar.getSolarTerm(year, month, day);
-//    }
+    public static String getSolarTerm(int year, int month, int day) {
+        return SolarTermUtil.getSolarTerm(year, month, day);
+    }
 }

@@ -15,8 +15,12 @@
  */
 package com.dh.timeutillib;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.SparseArray;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * http://www.cnblogs.com/moodlxs/archive/2010/12/18/2345392.html
@@ -24,7 +28,15 @@ import android.util.SparseArray;
  */
 public final class SolarTermUtil {
 
+    /**
+     * 保存每年24节气
+     */
+    private static SparseArray<String[]> mSolarTermsMap = new SparseArray<>();
 
+    /**
+     * 第一次使用必须调用init方法
+     * @param context
+     */
     public static void init(Context context) {
         if (SOLAR_TERMS == null)
             SOLAR_TERMS = context.getResources().getStringArray(R.array.solar_term);
@@ -573,10 +585,34 @@ public final class SolarTermUtil {
         return t;
     }
 
-    private static SparseArray<String[]> mSolarTermsMap = new SparseArray<>();
+    /**
+     * 返回24节气(不含时间，比如立春)
+     *
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     * @return 返回24节气
+     */
+    public static String getSolarTerm(int year, int month, int day) {
+        String[] solarTerms = SolarTermUtil.getSolarTerms(year);
+        String text = String.format("%s%s", year, getString(month, day));
+        String solar = "";
+        for (String solarTermName : solarTerms) {
+            if (solarTermName.contains(text)) {
+                solar = solarTermName.substring(solarTermName.length() - 2, solarTermName.length());
+//                solar = solarTermName.replace(text, "");
+                break;
+            }
+        }
+        return solar;
+    }
+
+    private static String getString(int month, int day) {
+        return (month >= 10 ? String.valueOf(month) : "0" + month) + (day >= 10 ? day : "0" + day);
+    }
 
     /**
-     * 获得某一年24节气
+     * 获得某一年24节气(包含时间，比如201802040528立春)
      *
      * @param year 年
      * @return 24节气
